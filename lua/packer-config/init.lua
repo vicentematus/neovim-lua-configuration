@@ -20,4 +20,14 @@ return require'packer'.startup(function()
 
 
     use 'romgrk/barbar.nvim'
+    use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
+    use 'nvim-treesitter/nvim-treesitter-refactor'
+    use {
+          "folke/twilight.nvim",
+          config = function()
+                require("twilight").setup {}
+          end
+        }
+
+    use 'windwp/nvim-ts-autotag'
 end)
