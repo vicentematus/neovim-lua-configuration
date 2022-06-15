@@ -24,3 +24,4 @@ set.cursorline = true
 set.hidden = true
 
 vim.colorscheme = duskfox
+vim.notify = require('notify')

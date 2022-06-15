@@ -2,11 +2,9 @@ return require'packer'.startup(function()
     use 'wbthomason/packer.nvim'
     use 'EdenEast/nightfox.nvim'
 
+    use 'kyazdani42/nvim-web-devicons'
     use {
     'kyazdani42/nvim-tree.lua',
-    requires = {
-      'kyazdani42/nvim-web-devicons', -- optional, for file icon
-    },
     tag = 'nightly' -- optional, updated every week. (see issue #1193)
     }
 
@@ -16,5 +14,10 @@ return require'packer'.startup(function()
   use 'saadparwaiz1/cmp_luasnip' -- Snippets source for nvim-cmp
     use 'L3MON4D3/LuaSnip' -- Snippets plugin
     use 'onsails/lspkind.nvim'
+    use 'rcarriga/nvim-notify'
 
+    use'nvim-lualine/lualine.nvim'
+
+
+    use 'romgrk/barbar.nvim'
 end)
