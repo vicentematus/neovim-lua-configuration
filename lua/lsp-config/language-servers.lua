@@ -1,6 +1,7 @@
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 local opts = { noremap = true, silent = true }
+local lsp_installer = require("nvim-lsp-installer")
 
 vim.g.mapleader = " "
 -- Use an on_attach function to only map the following keys
@@ -31,30 +32,23 @@ capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
 local lspconfig = require("lspconfig")
 -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
 local servers = { "tsserver", "html", "tailwindcss", "emmet_ls" }
-for _, lsp in ipairs(servers) do
-	lspconfig[lsp].setup({
-		on_attach = on_attach,
-		capabilities = capabilities,
-	})
+
+for _, name in pairs(servers) do
+	local server_is_found, server = lsp_installer.get_server(name)
+	if server_is_found then
+		if not server:is_installed() then
+			print("Installing " .. name)
+			server:install()
+		end
+	end
 end
 
-local lsp_flags = {
-	-- This is the default in Nvim 0.7+
-	debounce_text_changes = 150,
-}
-require("lspconfig")["pyright"].setup({
-	on_attach = on_attach,
-	flags = lsp_flags,
-})
-require("lspconfig")["tsserver"].setup({
-	on_attach = on_attach,
-	flags = lsp_flags,
-})
-require("lspconfig")["rust_analyzer"].setup({
-	on_attach = on_attach,
-	flags = lsp_flags,
-	-- Server-specific settings...
-	settings = {
-		["rust-analyzer"] = {},
-	},
-})
+lsp_installer.on_server_ready(function(server)
+	-- Specify the default options which we'll use to setup all servers
+	local default_opts = {
+		on_attach = on_attach,
+		capabilities = capabilities,
+	}
+
+	server:setup(default_opts)
+end)
